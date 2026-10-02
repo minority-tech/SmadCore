@@ -1551,7 +1551,7 @@ footer p{
 
                     <div>
                         Time:
-                        <span id="tapTime">10</span>s
+                        <span id="tapTime">15</span>s
                     </div>
 
                     <button
@@ -2695,7 +2695,7 @@ updateRewardsUI();
 ========================================================= */
 
 let tapScore = 0;
-let tapTime = 10;
+let tapTime = 15;
 let tapTimer = null;
 let tapGameRunning = false;
 
@@ -2770,11 +2770,11 @@ function endTapGame() {
 
     /*
        Every 5 taps = 1 Token.
-       Maximum 10 Tokens per round.
+       Maximum 100 Tokens per round.
     */
 
     const reward =
-        Math.min(10, Math.floor(tapScore / 5));
+        Math.min(100, Math.floor(tapScore / 5));
 
 
     if (reward > 0) {
