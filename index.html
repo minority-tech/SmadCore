@@ -2277,13 +2277,13 @@ window.addEventListener("load", function(){
 
     setTimeout(function(){
 
-        document.getElementById("loader").style.opacity="0";
+        document.getElementById("loader").style.opacity = "0";
 
         setTimeout(function(){
-            document.getElementById("loader").style.display="none";
-        },500);
+            document.getElementById("loader").style.display = "none";
+        }, 500);
 
-    },1000);
+    }, 1000);
 
 });
 
@@ -2294,8 +2294,8 @@ window.addEventListener("load", function(){
 
 function enterStudent(){
 
-    document.getElementById("landing").style.display="none";
-    document.getElementById("mainWebsite").style.display="block";
+    document.getElementById("landing").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "block";
 
     window.scrollTo(0,0);
 }
@@ -2307,16 +2307,16 @@ function enterStudent(){
 
 function openTeacherLogin(){
 
-    document.getElementById("teacherModal").style.display="flex";
+    document.getElementById("teacherModal").style.display = "flex";
     document.getElementById("teacherPassword").focus();
 
 }
 
 function closeTeacherLogin(){
 
-    document.getElementById("teacherModal").style.display="none";
-    document.getElementById("teacherPassword").value="";
-    document.getElementById("loginError").style.display="none";
+    document.getElementById("teacherModal").style.display = "none";
+    document.getElementById("teacherPassword").value = "";
+    document.getElementById("loginError").style.display = "none";
 
 }
 
@@ -2327,10 +2327,8 @@ function teacherLogin(){
 
     /*
        DEMO ONLY.
-
-       Untuk website sebenar, jangan letakkan password
-       di dalam JavaScript kerana pengguna boleh melihat
-       source code.
+       For a real website, do not store passwords
+       directly inside JavaScript.
     */
 
     const correctPassword = "prssmadjiwa@2026";
@@ -2339,15 +2337,15 @@ function teacherLogin(){
 
         closeTeacherLogin();
 
-        document.getElementById("landing").style.display="none";
-        document.getElementById("mainWebsite").style.display="none";
-        document.getElementById("teacherDashboard").style.display="block";
+        document.getElementById("landing").style.display = "none";
+        document.getElementById("mainWebsite").style.display = "none";
+        document.getElementById("teacherDashboard").style.display = "block";
 
         loadEntries();
 
     }else{
 
-        document.getElementById("loginError").style.display="block";
+        document.getElementById("loginError").style.display = "block";
 
     }
 
@@ -2376,12 +2374,6 @@ function submitFeeling(){
         return;
     }
 
-    /*
-       DEMO:
-       IC tidak disimpan ke dashboard untuk melindungi
-       maklumat peribadi murid.
-    */
-
     const maskedIC =
         ic.length >= 4
         ? "••••••" + ic.slice(-4)
@@ -2389,13 +2381,10 @@ function submitFeeling(){
 
     const entry = {
 
-        name:name,
-
-        ic:maskedIC,
-
-        message:message,
-
-        date:new Date().toLocaleString("ms-MY")
+        name: name,
+        ic: maskedIC,
+        message: message,
+        date: new Date().toLocaleString("ms-MY")
 
     };
 
@@ -2409,20 +2398,21 @@ function submitFeeling(){
         JSON.stringify(entries)
     );
 
-    document.getElementById("letFormBox").style.display="none";
+    document.getElementById("letFormBox").style.display = "none";
 
-    document.getElementById("thankYou").style.display="block";
+    document.getElementById("thankYou").style.display = "block";
 
 }
 
+
 function resetFeeling(){
 
-    document.getElementById("studentName").value="";
-    document.getElementById("studentIC").value="";
-    document.getElementById("studentMessage").value="";
+    document.getElementById("studentName").value = "";
+    document.getElementById("studentIC").value = "";
+    document.getElementById("studentMessage").value = "";
 
-    document.getElementById("thankYou").style.display="none";
-    document.getElementById("letFormBox").style.display="block";
+    document.getElementById("thankYou").style.display = "none";
+    document.getElementById("letFormBox").style.display = "block";
 
 }
 
@@ -2443,6 +2433,7 @@ function loadEntries(){
 
         container.innerHTML = `
             <div class="empty">
+
                 <div style="font-size:4rem;">📭</div>
 
                 <h3>Belum ada luahan</h3>
@@ -2451,22 +2442,23 @@ function loadEntries(){
                     Luahan murid yang dihantar dalam sesi browser
                     ini akan muncul di sini.
                 </p>
+
             </div>
         `;
 
         return;
     }
 
-    container.innerHTML="";
+    container.innerHTML = "";
 
-    entries.reverse().forEach((entry,index)=>{
+    entries.slice().reverse().forEach((entry)=>{
 
         const div =
             document.createElement("div");
 
-        div.className="entry";
+        div.className = "entry";
 
-        div.innerHTML=`
+        div.innerHTML = `
 
             <div class="student">
                 👤 ${escapeHTML(entry.name)}
@@ -2489,9 +2481,10 @@ function loadEntries(){
 
 }
 
+
 function escapeHTML(text){
 
-    return text
+    return String(text)
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -2500,10 +2493,11 @@ function escapeHTML(text){
 
 }
 
+
 function backToStudent(){
 
-    document.getElementById("teacherDashboard").style.display="none";
-    document.getElementById("mainWebsite").style.display="block";
+    document.getElementById("teacherDashboard").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "block";
 
     window.scrollTo(0,0);
 
@@ -2514,38 +2508,649 @@ function backToStudent(){
    INTERACTIVE COMIC
 ========================= */
 
-const comicScenes=[
-{character:"🧑‍🎓",dialogue:"Aliff duduk seorang diri semasa waktu rehat. Beberapa pelajar mula mentertawakan dan mengejeknya.",question:"Apa yang anda akan lakukan?",choices:[{text:"😂 Gelak bersama supaya tidak nampak pelik",correct:false,feedback:"Menyertai ejekan boleh membuat keadaan lebih teruk dan menyebabkan Aliff rasa lebih terasing."},{text:"💙 Tanya Aliff sama ada dia okay",correct:true,feedback:"Betul! Sokongan ringkas boleh membantu seseorang rasa mereka tidak keseorangan."},{text:"📱 Rakam dan hantar kepada group chat",correct:false,feedback:"Merakam atau menyebarkan kejadian boleh menambahkan mudarat kepada orang yang terlibat."}]},
-{character:"👥",dialogue:"Seorang pelajar berkata, 'Ala, gurau je. Jangan serius sangat.' Aliff kelihatan tidak selesa.",question:"Apa respons yang lebih sesuai?",choices:[{text:"🛑 Cakap bahawa gurauan yang menyakitkan tetap perlu dihentikan",correct:true,feedback:"Bagus! Anda menetapkan sempadan tanpa menggalakkan pergaduhan."},{text:"😆 Tambah satu lagi lawak",correct:false,feedback:"Ini boleh menyebabkan situasi berterusan dan membuat Aliff lebih tertekan."},{text:"🚶 Pergi dan biarkan semuanya",correct:false,feedback:"Jika selamat, mendapatkan bantuan atau menyokong rakan boleh menjadi pilihan yang lebih membantu."}]},
-{character:"👩‍🏫",dialogue:"Aliff mahu bercakap dengan seseorang tetapi tidak tahu siapa yang patut didekati.",question:"Apa langkah seterusnya yang sesuai?",choices:[{text:"🤝 Bantu dia cari guru, kaunselor atau orang dewasa dipercayai",correct:true,feedback:"Betul! Orang dewasa yang sesuai boleh membantu menilai situasi dan mengambil tindakan yang sewajarnya."},{text:"⚔️ Suruh Aliff lawan balik",correct:false,feedback:"Membalas secara agresif boleh meningkatkan risiko konflik dan bukan langkah sokongan yang selamat."},{text:"🤐 Suruh dia simpan sendiri",correct:false,feedback:"Menyimpan masalah seorang diri boleh membuat seseorang sukar mendapatkan sokongan yang diperlukan."}]},
-{character:"🧑‍🤝‍🧑",dialogue:"Aliff mula bercerita tentang apa yang berlaku kepada seorang rakan yang dipercayainya.",question:"Bagaimana anda patut mendengar?",choices:[{text:"👂 Dengarkan tanpa mengejek dan bantu cari sokongan",correct:true,feedback:"Tepat! Mendengar dengan hormat dan menghubungkan rakan kepada bantuan ialah tindakan yang menyokong."},{text:"📢 Ceritakan kepada semua orang",correct:false,feedback:"Menyebarkan cerita peribadi boleh melanggar kepercayaan dan menambahkan tekanan."},{text:"🙄 Tukar topik kerana masalah itu bukan urusan anda",correct:false,feedback:"Mengabaikan seseorang ketika mereka meminta sokongan boleh membuat mereka rasa lebih keseorangan."}]},
-{character:"💙",dialogue:"Dengan sokongan yang sesuai, Aliff tahu bahawa dia boleh mendapatkan bantuan dan tidak perlu menghadapi masalah seorang diri.",question:"Apakah mesej utama cerita ini?",choices:[{text:"🌱 Bersuara, menyokong dan mendapatkan bantuan ialah langkah penting",correct:true,feedback:"🎉 Tepat! SmadCare menggalakkan kita membina budaya sekolah yang selamat dan prihatin."},{text:"🏆 Masalah buli mesti diselesaikan seorang diri",correct:false,feedback:"Mendapatkan sokongan daripada orang yang dipercayai ialah pilihan yang sesuai apabila berdepan masalah."},{text:"🤷 Tiada apa yang boleh dilakukan",correct:false,feedback:"Ada langkah yang boleh diambil seperti menyokong rakan dan mendapatkan bantuan yang sesuai."}]}
+const comicScenes = [
+
+{
+    character:"🧑‍🎓",
+
+    dialogue:
+        "Aliff duduk seorang diri semasa waktu rehat. Beberapa pelajar mula mentertawakan dan mengejeknya.",
+
+    question:
+        "Apa yang anda akan lakukan?",
+
+    choices:[
+
+        {
+            text:"😂 Gelak bersama supaya tidak nampak pelik",
+            correct:false,
+            feedback:
+                "Menyertai ejekan boleh membuat keadaan lebih teruk dan menyebabkan Aliff rasa lebih terasing."
+        },
+
+        {
+            text:"💙 Tanya Aliff sama ada dia okay",
+            correct:true,
+            feedback:
+                "Betul! Sokongan ringkas boleh membantu seseorang rasa mereka tidak keseorangan."
+        },
+
+        {
+            text:"📱 Rakam dan hantar kepada group chat",
+            correct:false,
+            feedback:
+                "Merakam atau menyebarkan kejadian boleh menambahkan mudarat kepada orang yang terlibat."
+        }
+
+    ]
+},
+
+{
+    character:"👥",
+
+    dialogue:
+        "Seorang pelajar berkata, 'Ala, gurau je. Jangan serius sangat.' Aliff kelihatan tidak selesa.",
+
+    question:
+        "Apa respons yang lebih sesuai?",
+
+    choices:[
+
+        {
+            text:"🛑 Cakap bahawa gurauan yang menyakitkan tetap perlu dihentikan",
+            correct:true,
+            feedback:
+                "Bagus! Anda menetapkan sempadan tanpa menggalakkan pergaduhan."
+        },
+
+        {
+            text:"😆 Tambah satu lagi lawak",
+            correct:false,
+            feedback:
+                "Ini boleh menyebabkan situasi berterusan dan membuat Aliff lebih tertekan."
+        },
+
+        {
+            text:"🚶 Pergi dan biarkan semuanya",
+            correct:false,
+            feedback:
+                "Jika selamat, mendapatkan bantuan atau menyokong rakan boleh menjadi pilihan yang lebih membantu."
+        }
+
+    ]
+},
+
+{
+    character:"👩‍🏫",
+
+    dialogue:
+        "Aliff mahu bercakap dengan seseorang tetapi tidak tahu siapa yang patut didekati.",
+
+    question:
+        "Apa langkah seterusnya yang sesuai?",
+
+    choices:[
+
+        {
+            text:"🤝 Bantu dia cari guru, kaunselor atau orang dewasa dipercayai",
+            correct:true,
+            feedback:
+                "Betul! Orang dewasa yang sesuai boleh membantu menilai situasi dan mengambil tindakan yang sewajarnya."
+        },
+
+        {
+            text:"⚔️ Suruh Aliff lawan balik",
+            correct:false,
+            feedback:
+                "Membalas secara agresif boleh meningkatkan risiko konflik dan bukan langkah sokongan yang selamat."
+        },
+
+        {
+            text:"🤐 Suruh dia simpan sendiri",
+            correct:false,
+            feedback:
+                "Menyimpan masalah seorang diri boleh membuat seseorang sukar mendapatkan sokongan yang diperlukan."
+        }
+
+    ]
+},
+
+{
+    character:"🧑‍🤝‍🧑",
+
+    dialogue:
+        "Aliff mula bercerita tentang apa yang berlaku kepada seorang rakan yang dipercayainya.",
+
+    question:
+        "Bagaimana anda patut mendengar?",
+
+    choices:[
+
+        {
+            text:"👂 Dengarkan tanpa mengejek dan bantu cari sokongan",
+            correct:true,
+            feedback:
+                "Tepat! Mendengar dengan hormat dan menghubungkan rakan kepada bantuan ialah tindakan yang menyokong."
+        },
+
+        {
+            text:"📢 Ceritakan kepada semua orang",
+            correct:false,
+            feedback:
+                "Menyebarkan cerita peribadi boleh melanggar kepercayaan dan menambahkan tekanan."
+        },
+
+        {
+            text:"🙄 Tukar topik kerana masalah itu bukan urusan anda",
+            correct:false,
+            feedback:
+                "Mengabaikan seseorang ketika mereka meminta sokongan boleh membuat mereka rasa lebih keseorangan."
+        }
+
+    ]
+},
+
+{
+    character:"💙",
+
+    dialogue:
+        "Dengan sokongan yang sesuai, Aliff tahu bahawa dia boleh mendapatkan bantuan dan tidak perlu menghadapi masalah seorang diri.",
+
+    question:
+        "Apakah mesej utama cerita ini?",
+
+    choices:[
+
+        {
+            text:"🌱 Bersuara, menyokong dan mendapatkan bantuan ialah langkah penting",
+            correct:true,
+            feedback:
+                "🎉 Tepat! SmadCare menggalakkan kita membina budaya sekolah yang selamat dan prihatin."
+        },
+
+        {
+            text:"🏆 Masalah buli mesti diselesaikan seorang diri",
+            correct:false,
+            feedback:
+                "Mendapatkan sokongan daripada orang yang dipercayai ialah pilihan yang sesuai apabila berdepan masalah."
+        },
+
+        {
+            text:"🤷 Tiada apa yang boleh dilakukan",
+            correct:false,
+            feedback:
+                "Ada langkah yang boleh diambil seperti menyokong rakan dan mendapatkan bantuan yang sesuai."
+        }
+
+    ]
+}
+
 ];
-let currentComicScene=0;
-function loadComicScene(){const scene=comicScenes[currentComicScene];document.getElementById("comicSceneNumber").textContent=currentComicScene+1;document.getElementById("comicTotalScenes").textContent=comicScenes.length;document.getElementById("comicCharacter").textContent=scene.character;document.getElementById("comicDialogue").textContent=scene.dialogue;document.getElementById("comicQuestion").textContent=scene.question;document.getElementById("comicFeedback").textContent="";document.getElementById("comicNext").style.display="none";const choices=document.getElementById("comicChoices");choices.innerHTML="";scene.choices.forEach((choice,index)=>{const button=document.createElement("button");button.className="comic-choice";button.textContent=choice.text;button.onclick=()=>chooseComicAnswer(button,index);choices.appendChild(button);});}
-function chooseComicAnswer(button,index){const scene=comicScenes[currentComicScene],choice=scene.choices[index],buttons=document.querySelectorAll(".comic-choice");buttons.forEach(b=>b.disabled=true);if(choice.correct){button.classList.add("correct");document.getElementById("comicFeedback").textContent="✅ "+choice.feedback;}else{button.classList.add("wrong");document.getElementById("comicFeedback").textContent="💡 "+choice.feedback;scene.choices.forEach((c,i)=>{if(c.correct)buttons[i].classList.add("correct");});}const next=document.getElementById("comicNext");next.textContent=currentComicScene===comicScenes.length-1?"Finish Story ✓":"Continue →";next.style.display="inline-flex";}
-function nextComicScene(){if(currentComicScene<comicScenes.length-1){currentComicScene++;loadComicScene();}else{currentComicScene=0;loadComicScene();}}
+
+
+let currentComicScene = 0;
+
+
+function loadComicScene(){
+
+    const scene =
+        comicScenes[currentComicScene];
+
+    document.getElementById("comicSceneNumber")
+        .textContent = currentComicScene + 1;
+
+    document.getElementById("comicTotalScenes")
+        .textContent = comicScenes.length;
+
+    document.getElementById("comicCharacter")
+        .textContent = scene.character;
+
+    document.getElementById("comicDialogue")
+        .textContent = scene.dialogue;
+
+    document.getElementById("comicQuestion")
+        .textContent = scene.question;
+
+    document.getElementById("comicFeedback")
+        .textContent = "";
+
+    document.getElementById("comicNext")
+        .style.display = "none";
+
+    const choices =
+        document.getElementById("comicChoices");
+
+    choices.innerHTML = "";
+
+    scene.choices.forEach((choice,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className = "comic-choice";
+
+        button.textContent = choice.text;
+
+        button.onclick =
+            () => chooseComicAnswer(button,index);
+
+        choices.appendChild(button);
+
+    });
+
+}
+
+
+function chooseComicAnswer(button,index){
+
+    const scene =
+        comicScenes[currentComicScene];
+
+    const choice =
+        scene.choices[index];
+
+    const buttons =
+        document.querySelectorAll(".comic-choice");
+
+    buttons.forEach(b => b.disabled = true);
+
+    if(choice.correct){
+
+        button.classList.add("correct");
+
+        document.getElementById("comicFeedback")
+            .textContent =
+            "✅ " + choice.feedback;
+
+    }else{
+
+        button.classList.add("wrong");
+
+        document.getElementById("comicFeedback")
+            .textContent =
+            "💡 " + choice.feedback;
+
+        scene.choices.forEach((c,i)=>{
+
+            if(c.correct){
+                buttons[i].classList.add("correct");
+            }
+
+        });
+
+    }
+
+    const next =
+        document.getElementById("comicNext");
+
+    next.textContent =
+        currentComicScene === comicScenes.length - 1
+        ? "Finish Story ✓"
+        : "Continue →";
+
+    next.style.display = "inline-flex";
+
+}
+
+
+function nextComicScene(){
+
+    if(currentComicScene < comicScenes.length - 1){
+
+        currentComicScene++;
+
+        loadComicScene();
+
+    }else{
+
+        currentComicScene = 0;
+
+        loadComicScene();
+
+    }
+
+}
+
+
 loadComicScene();
 
-/* =========================
+
+/* =========================================================
    SMADCARE MISSION QUIZ
+========================================================= */
+
+const questions = [
+
+{
+    type:"SCENARIO 01",
+
+    q:
+        "Anda nampak seorang murid diejek berulang kali di sekolah. Apakah tindakan yang paling membantu jika keadaan selamat?",
+
+    answers:[
+        "Sertai supaya pembuli berhenti mengejek anda",
+        "Sokong murid tersebut dan dapatkan bantuan orang dewasa yang dipercayai",
+        "Rakam dan sebarkan kejadian",
+        "Beritahu semua orang tentang apa yang berlaku"
+    ],
+
+    correct:1,
+
+    explanation:
+        "Menyokong mangsa dan mendapatkan bantuan orang dewasa yang sesuai boleh membantu menangani situasi tanpa menambah risiko."
+},
+
+{
+    type:"SCENARIO 02",
+
+    q:
+        "Seorang rakan memberitahu anda bahawa dia menerima mesej penghinaan berulang kali dalam group chat. Apa yang sesuai dilakukan?",
+
+    answers:[
+        "Suruh dia balas dengan penghinaan yang lebih teruk",
+        "Abaikan kerana ia berlaku dalam talian",
+        "Dengar, simpan bukti yang sesuai dan bantu dia mendapatkan sokongan",
+        "Forward mesej itu kepada semua pelajar"
+    ],
+
+    correct:2,
+
+    explanation:
+        "Untuk cyberbullying, sokongan dan bantuan orang dewasa yang dipercayai boleh membantu. Bukti yang sesuai juga boleh berguna apabila membuat laporan."
+},
+
+{
+    type:"SCENARIO 03",
+
+    q:
+        "Seorang rakan sedang meluahkan masalah kepada anda. Apakah respons yang sesuai?",
+
+    answers:[
+        "Potong percakapannya dan terus beri hukuman",
+        "Dengar dengan hormat dan bantu cari sokongan yang sesuai",
+        "Ceritakan masalahnya kepada rakan-rakan lain",
+        "Katakan bahawa masalah itu tidak penting"
+    ],
+
+    correct:1,
+
+    explanation:
+        "Mendengar dengan hormat dan membantu seseorang mendapatkan sokongan ialah pendekatan yang lebih sesuai daripada mengejek, menyebarkan cerita atau menyalahkan mereka."
+},
+
+{
+    type:"SCENARIO 04",
+
+    q:
+        "Apakah peranan PRS apabila rakan menghadapi masalah buli?",
+
+    answers:[
+        "Menentukan hukuman untuk pelaku",
+        "Menggantikan guru atau kaunselor sepenuhnya",
+        "Mendengar, menyokong dan membantu menghubungkan rakan kepada bantuan yang sesuai",
+        "Menyelesaikan semua kes secara rahsia seorang diri"
+    ],
+
+    correct:2,
+
+    explanation:
+        "PRS boleh menjadi pendengar dan penghubung kepada bantuan. PRS bukan pengganti guru, kaunselor atau pihak sekolah dalam menguruskan kes serius."
+},
+
+{
+    type:"SCENARIO 05",
+
+    q:
+        "Seorang pelajar berkata, 'Saya tak nak beritahu sesiapa.' Apakah respons yang lebih menyokong?",
+
+    answers:[
+        "Paksa dia bercerita kepada semua orang",
+        "Dengar dan galakkan dia bercakap dengan orang dewasa yang dipercayai apabila dia bersedia",
+        "Ejek dia kerana tidak berani",
+        "Biarkan dia menghadapi semuanya seorang diri"
+    ],
+
+    correct:1,
+
+    explanation:
+        "Berikan ruang untuk bercakap tanpa mengejek dan galakkan mereka mendapatkan bantuan daripada orang dewasa yang dipercayai. Jika terdapat bahaya segera, bantuan perlu dicari dengan segera."
+},
+
+{
+    type:"SCENARIO 06",
+
+    q:
+        "Antara berikut, yang manakah paling menggambarkan budaya sekolah yang selamat?",
+
+    answers:[
+        "Murid takut untuk bersuara",
+        "Buli dianggap sebagai gurauan biasa",
+        "Murid saling menghormati dan tahu bagaimana mendapatkan bantuan",
+        "Semua masalah diselesaikan oleh murid sendiri"
+    ],
+
+    correct:2,
+
+    explanation:
+        "Budaya sekolah yang selamat melibatkan rasa hormat, sokongan dan pengetahuan tentang cara mendapatkan bantuan apabila diperlukan."
+}
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let xp = 0;
+
+
+function loadQuestion(){
+
+    const q =
+        questions[currentQuestion];
+
+    document.getElementById("questionNumber")
+        .textContent =
+        `MISSION ${currentQuestion + 1} / ${questions.length}`;
+
+    document.getElementById("questionType")
+        .textContent = q.type;
+
+    document.getElementById("question")
+        .textContent = q.q;
+
+    document.getElementById("progressBar")
+        .style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+
+    document.getElementById("liveXP")
+        .textContent = xp;
+
+    document.getElementById("answerExplanation")
+        .style.display = "none";
+
+    const answers =
+        document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+    q.answers.forEach((answer,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className = "answer";
+
+        button.textContent = answer;
+
+        button.onclick =
+            () => checkAnswer(button,index);
+
+        answers.appendChild(button);
+
+    });
+
+}
+
+
+function checkAnswer(button,index){
+
+    const q =
+        questions[currentQuestion];
+
+    const allButtons =
+        document.querySelectorAll(".answer");
+
+    allButtons.forEach(b => b.disabled = true);
+
+    const explanation =
+        document.getElementById("answerExplanation");
+
+    explanation.style.display = "block";
+
+    if(index === q.correct){
+
+        button.classList.add("correct");
+
+        score++;
+
+        xp += 20;
+
+        explanation.innerHTML =
+            "<b>⭐ Correct!</b><br>" +
+            q.explanation;
+
+    }else{
+
+        button.classList.add("wrong");
+
+        allButtons[q.correct]
+            .classList.add("correct");
+
+        xp += 5;
+
+        explanation.innerHTML =
+            "<b>💡 Keep learning!</b><br>" +
+            q.explanation;
+
+    }
+
+    document.getElementById("liveXP")
+        .textContent = xp;
+
+
+    setTimeout(()=>{
+
+        currentQuestion++;
+
+        if(currentQuestion < questions.length){
+
+            loadQuestion();
+
+        }else{
+
+            finishQuiz();
+
+        }
+
+    },1800);
+
+}
+
+
+/* =========================
+   QUIZ BADGES
 ========================= */
 
-const questions=[
-{type:"SCENARIO 01",q:"Anda nampak seorang murid diejek berulang kali di sekolah. Apakah tindakan yang paling membantu jika keadaan selamat?",answers:["Sertai supaya pembuli berhenti mengejek anda","Sokong murid tersebut dan dapatkan bantuan orang dewasa yang dipercayai","Rakam dan sebarkan kejadian","Beritahu semua orang tentang apa yang berlaku"],correct:1,explanation:"Menyokong mangsa dan mendapatkan bantuan orang dewasa yang sesuai boleh membantu menangani situasi tanpa menambah risiko."},
-{type:"SCENARIO 02",q:"Seorang rakan memberitahu anda bahawa dia menerima mesej penghinaan berulang kali dalam group chat. Apa yang sesuai dilakukan?",answers:["Suruh dia balas dengan penghinaan yang lebih teruk","Abaikan kerana ia berlaku dalam talian","Dengar, simpan bukti yang sesuai dan bantu dia mendapatkan sokongan","Forward mesej itu kepada semua pelajar"],correct:2,explanation:"Untuk cyberbullying, sokongan dan bantuan orang dewasa yang dipercayai boleh membantu. Bukti yang sesuai juga boleh berguna apabila membuat laporan."},
-{type:"SCENARIO 03",q:"Seorang rakan sedang meluahkan masalah kepada anda. Apakah respons yang sesuai?",answers:["Potong percakapannya dan terus beri hukuman","Dengar dengan hormat dan bantu cari sokongan yang sesuai","Ceritakan masalahnya kepada rakan-rakan lain","Katakan bahawa masalah itu tidak penting"],correct:1,explanation:"Mendengar dengan hormat dan membantu seseorang mendapatkan sokongan ialah pendekatan yang lebih sesuai daripada mengejek, menyebarkan cerita atau menyalahkan mereka."},
-{type:"SCENARIO 04",q:"Apakah peranan PRS apabila rakan menghadapi masalah buli?",answers:["Menentukan hukuman untuk pelaku","Menggantikan guru atau kaunselor sepenuhnya","Mendengar, menyokong dan membantu menghubungkan rakan kepada bantuan yang sesuai","Menyelesaikan semua kes secara rahsia seorang diri"],correct:2,explanation:"PRS boleh menjadi pendengar dan penghubung kepada bantuan. PRS bukan pengganti guru, kaunselor atau pihak sekolah dalam menguruskan kes serius."},
-{type:"SCENARIO 05",q:"Seorang pelajar berkata, 'Saya tak nak beritahu sesiapa.' Apakah respons yang lebih menyokong?",answers:["Paksa dia bercerita kepada semua orang","Dengar dan galakkan dia bercakap dengan orang dewasa yang dipercayai apabila dia bersedia","Ejek dia kerana tidak berani","Biarkan dia menghadapi semuanya seorang diri"],correct:1,explanation:"Berikan ruang untuk bercakap tanpa mengejek dan galakkan mereka mendapatkan bantuan daripada orang dewasa yang dipercayai. Jika terdapat bahaya segera, bantuan perlu dicari dengan segera."},
-{type:"SCENARIO 06",q:"Antara berikut, yang manakah paling menggambarkan budaya sekolah yang selamat?",answers:["Murid takut untuk bersuara","Buli dianggap sebagai gurauan biasa","Murid saling menghormati dan tahu bagaimana mendapatkan bantuan","Semua masalah diselesaikan oleh murid sendiri"],correct:2,explanation:"Budaya sekolah yang selamat melibatkan rasa hormat, sokongan dan pengetahuan tentang cara mendapatkan bantuan apabila diperlukan."}
-];
-let currentQuestion=0,score=0,xp=0;
-function loadQuestion(){const q=questions[currentQuestion];document.getElementById("questionNumber").textContent=`MISSION ${currentQuestion+1} / ${questions.length}`;document.getElementById("questionType").textContent=q.type;document.getElementById("question").textContent=q.q;document.getElementById("progressBar").style.width=((currentQuestion+1)/questions.length*100)+"%";document.getElementById("liveXP").textContent=xp;document.getElementById("answerExplanation").style.display="none";const answers=document.getElementById("answers");answers.innerHTML="";q.answers.forEach((answer,index)=>{const button=document.createElement("button");button.className="answer";button.textContent=answer;button.onclick=()=>checkAnswer(button,index);answers.appendChild(button);});}
-function checkAnswer(button,index){const q=questions[currentQuestion],allButtons=document.querySelectorAll(".answer");allButtons.forEach(b=>b.disabled=true);const explanation=document.getElementById("answerExplanation");explanation.style.display="block";if(index===q.correct){button.classList.add("correct");score++;xp+=20;explanation.innerHTML="<b>⭐ Correct!</b><br>"+q.explanation;}else{button.classList.add("wrong");allButtons[q.correct].classList.add("correct");xp+=5;explanation.innerHTML="<b>💡 Keep learning!</b><br>"+q.explanation;}document.getElementById("liveXP").textContent=xp;setTimeout(()=>{currentQuestion++;if(currentQuestion<questions.length)loadQuestion();else finishQuiz();},1800);}
-function getBadge(score){if(score===questions.length)return "PADUUUUU! Aliff iqbal sayang hang la bro.";if(score>=Math.ceil(questions.length*.8))return "💙 Anti-Bullying Champion";if(score>=Math.ceil(questions.length*.6))rewardQuizTokens(score);return "🌱 Safe Supporter";return "✨ Kindness Starter";}
-function finishQuiz(){document.getElementById("quizContent").style.display="none";document.getElementById("quizResult").style.display="block";document.getElementById("score").textContent=`${score}/${questions.length}`;document.getElementById("xpTotal").textContent=`⭐ ${xp} XP EARNED`;document.getElementById("quizBadge").textContent=getBadge(score);let message=score===questions.length?"🏆 Kau mampu nk jadi prs ni, mai mohon kat cg fazliza ya..":score>=Math.ceil(questions.length*.6)?"👏 Bagus! Teruskan explore SmadCare untuk menguatkan pengetahuan anda.":"🌱 Tak apa! Cuba lagi dan gunakan bahagian SmadCare yang lain untuk belajar lebih banyak.";document.getElementById("scoreMessage").textContent=message;}
-function restartQuiz(){currentQuestion=0;score=0;xp=0;document.getElementById("quizContent").style.display="block";document.getElementById("quizResult").style.display="none";loadQuestion();}
+function getBadge(score){
+
+    if(score === questions.length){
+
+        return "🏆 PADUUUUU! Aliff iqbal sayang hang la bro.";
+
+    }
+
+    if(score >= Math.ceil(questions.length * 0.8)){
+
+        return "💙 Anti-Bullying Champion";
+
+    }
+
+    if(score >= Math.ceil(questions.length * 0.6)){
+
+        return "🌱 Safe Supporter";
+
+    }
+
+    return "✨ Kindness Starter";
+
+}
+
+
+/* =========================
+   QUIZ FINISH
+========================= */
+
+function finishQuiz(){
+
+    /*
+       Give Tokens once after completing
+       the quiz.
+    */
+
+    rewardQuizTokens(score);
+
+
+    document.getElementById("quizContent")
+        .style.display = "none";
+
+    document.getElementById("quizResult")
+        .style.display = "block";
+
+    document.getElementById("score")
+        .textContent =
+        `${score}/${questions.length}`;
+
+    document.getElementById("xpTotal")
+        .textContent =
+        `⭐ ${xp} XP EARNED`;
+
+    document.getElementById("quizBadge")
+        .textContent =
+        getBadge(score);
+
+
+    let message =
+        score === questions.length
+        ? "🏆 Kau mampu nk jadi prs ni, mai mohon kat cg fazliza ya.."
+        : score >= Math.ceil(questions.length * 0.6)
+        ? "👏 Bagus! Teruskan explore SmadCare untuk menguatkan pengetahuan anda."
+        : "🌱 Tak apa! Cuba lagi dan gunakan bahagian SmadCare yang lain untuk belajar lebih banyak.";
+
+    document.getElementById("scoreMessage")
+        .textContent = message;
+
+}
+
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+    score = 0;
+    xp = 0;
+
+    document.getElementById("quizContent")
+        .style.display = "block";
+
+    document.getElementById("quizResult")
+        .style.display = "none";
+
+    loadQuestion();
+
+}
+
+
 loadQuestion();
+
 
 /* =========================
    ESCAPE
@@ -2553,13 +3158,14 @@ loadQuestion();
 
 document.addEventListener("keydown",function(e){
 
-    if(e.key==="Escape"){
+    if(e.key === "Escape"){
+
         closeTeacherLogin();
+
     }
 
 });
 
-//<!-- SMADCARE UPDATE -->
 
 /* =========================================================
    SMADCARE TOKEN + BADGE SYSTEM
@@ -2567,39 +3173,52 @@ document.addEventListener("keydown",function(e){
 
 const TOKEN_KEY = "smadcareTokens";
 
-let smadTokens = parseInt(
-    localStorage.getItem(TOKEN_KEY) || "0"
-);
+let smadTokens =
+    parseInt(
+        localStorage.getItem(TOKEN_KEY) || "0"
+    );
+
+
+/* =========================
+   BADGES
+========================= */
 
 const badges = [
+
     {
         name: "🌱 Kindness Starter",
         required: 0
     },
+
     {
         name: "💙 Safe Supporter",
         required: 50
     },
+
     {
         name: "⭐ Kindness Champion",
         required: 100
     },
+
     {
         name: "🏆 SmadCare Hero",
         required: 200
     },
+
     {
-        name: "👑 Ultimate PEERS"
+        name: "👑 Ultimate PEERS",
         required: 500
     },
+
     {
-        name: "🐐 The Greatest Kindness"
+        name: "🐐 The Greatest Kindness",
         required: 10000
     }
+
 ];
 
 
-function saveTokens() {
+function saveTokens(){
 
     localStorage.setItem(
         TOKEN_KEY,
@@ -2609,14 +3228,16 @@ function saveTokens() {
 }
 
 
-function getCurrentBadge() {
+function getCurrentBadge(){
 
     let current = badges[0];
 
-    badges.forEach(badge => {
+    badges.forEach(badge=>{
 
-        if (smadTokens >= badge.required) {
+        if(smadTokens >= badge.required){
+
             current = badge;
+
         }
 
     });
@@ -2626,7 +3247,7 @@ function getCurrentBadge() {
 }
 
 
-function updateRewardsUI() {
+function updateRewardsUI(){
 
     const tokenElement =
         document.getElementById("tokenCount");
@@ -2634,11 +3255,16 @@ function updateRewardsUI() {
     const badgeElement =
         document.getElementById("currentBadge");
 
-    if (tokenElement) {
-        tokenElement.textContent = smadTokens;
+
+    if(tokenElement){
+
+        tokenElement.textContent =
+            smadTokens;
+
     }
 
-    if (badgeElement) {
+
+    if(badgeElement){
 
         badgeElement.textContent =
             getCurrentBadge().name;
@@ -2646,20 +3272,19 @@ function updateRewardsUI() {
     }
 
 
-    // Update badge cards
-
-    badges.forEach((badge, index) => {
+    badges.forEach((badge,index)=>{
 
         const element =
             document.getElementById("badge" + index);
 
-        if (!element) return;
+        if(!element) return;
 
-        if (smadTokens >= badge.required) {
+
+        if(smadTokens >= badge.required){
 
             element.classList.add("unlocked");
 
-        } else {
+        }else{
 
             element.classList.remove("unlocked");
 
@@ -2670,28 +3295,30 @@ function updateRewardsUI() {
 }
 
 
-function showTokenPopup(amount, message = "") {
+function showTokenPopup(amount,message = ""){
 
     const popup =
         document.getElementById("tokenPopup");
 
-    if (!popup) return;
+    if(!popup) return;
+
 
     popup.textContent =
         `🪙 +${amount} Tokens! ${message}`;
 
     popup.classList.add("show");
 
-    setTimeout(() => {
+
+    setTimeout(()=>{
 
         popup.classList.remove("show");
 
-    }, 2500);
+    },2500);
 
 }
 
 
-function addTokens(amount, reason = "") {
+function addTokens(amount,reason = ""){
 
     smadTokens += amount;
 
@@ -2699,15 +3326,12 @@ function addTokens(amount, reason = "") {
 
     updateRewardsUI();
 
-    showTokenPopup(amount, reason);
+    showTokenPopup(amount,reason);
 
 }
 
 
-/* Initialize */
-
 updateRewardsUI();
-
 
 
 /* =========================================================
@@ -2720,14 +3344,16 @@ let tapTimer = null;
 let tapGameRunning = false;
 
 
-function startTapGame() {
+function startTapGame(){
 
-    if (tapGameRunning) return;
+    if(tapGameRunning) return;
+
 
     tapScore = 0;
     tapTime = 15;
 
     tapGameRunning = true;
+
 
     document.getElementById("tapScore")
         .textContent = tapScore;
@@ -2745,27 +3371,29 @@ function startTapGame() {
         .style.display = "block";
 
 
-    tapTimer = setInterval(() => {
+    tapTimer =
+        setInterval(()=>{
 
-        tapTime--;
+            tapTime--;
 
-        document.getElementById("tapTime")
-            .textContent = tapTime;
+            document.getElementById("tapTime")
+                .textContent = tapTime;
 
-        if (tapTime <= 0) {
 
-            endTapGame();
+            if(tapTime <= 0){
 
-        }
+                endTapGame();
 
-    }, 1000);
+            }
+
+        },1000);
 
 }
 
 
-function tapHeart() {
+function tapHeart(){
 
-    if (!tapGameRunning) return;
+    if(!tapGameRunning) return;
 
     tapScore++;
 
@@ -2775,11 +3403,14 @@ function tapHeart() {
 }
 
 
-function endTapGame() {
+function endTapGame(){
 
     clearInterval(tapTimer);
 
+    tapTimer = null;
+
     tapGameRunning = false;
+
 
     document.getElementById("tapHeart")
         .style.display = "none";
@@ -2794,21 +3425,25 @@ function endTapGame() {
     */
 
     const reward =
-        Math.min(100, Math.floor(tapScore / 5));
+        Math.min(
+            100,
+            Math.floor(tapScore / 5)
+        );
 
 
-    if (reward > 0) {
+    if(reward > 0){
 
         addTokens(
             reward,
             "Great tapping!"
         );
 
+
         document.getElementById("tapMessage")
             .textContent =
             `Nice! You scored ${tapScore} taps and earned ${reward} Tokens!`;
 
-    } else {
+    }else{
 
         document.getElementById("tapMessage")
             .textContent =
@@ -2819,12 +3454,12 @@ function endTapGame() {
 }
 
 
-
 /* =========================================================
    GAME 2 — KINDNESS MEMORY
 ========================================================= */
 
 const memoryEmojis = [
+
     "💙",
     "💙",
     "⭐",
@@ -2833,7 +3468,9 @@ const memoryEmojis = [
     "🌱",
     "🤝",
     "🤝"
+
 ];
+
 
 let memoryCards = [];
 let firstCard = null;
@@ -2842,7 +3479,7 @@ let memoryLocked = false;
 let memoryMatches = 0;
 
 
-function startMemoryGame() {
+function startMemoryGame(){
 
     const grid =
         document.getElementById("memoryGrid");
@@ -2850,9 +3487,11 @@ function startMemoryGame() {
     const message =
         document.getElementById("memoryMessage");
 
+
     grid.innerHTML = "";
 
     message.textContent = "";
+
 
     firstCard = null;
     secondCard = null;
@@ -2862,21 +3501,24 @@ function startMemoryGame() {
 
     memoryCards =
         [...memoryEmojis]
-        .sort(() => Math.random() - 0.5);
+        .sort(()=>Math.random() - 0.5);
 
 
-    memoryCards.forEach((emoji, index) => {
+    memoryCards.forEach((emoji,index)=>{
 
         const button =
             document.createElement("button");
 
-        button.className = "memory-card";
+        button.className =
+            "memory-card";
 
         button.textContent = "?";
 
-        button.dataset.emoji = emoji;
+        button.dataset.emoji =
+            emoji;
 
-        button.dataset.index = index;
+        button.dataset.index =
+            index;
 
         button.onclick =
             () => flipMemoryCard(button);
@@ -2888,14 +3530,16 @@ function startMemoryGame() {
 }
 
 
-function flipMemoryCard(card) {
+function flipMemoryCard(card){
 
-    if (memoryLocked) return;
+    if(memoryLocked) return;
 
-    if (card === firstCard) return;
+    if(card === firstCard) return;
 
-    if (card.classList.contains("matched")) {
+    if(card.classList.contains("matched")){
+
         return;
+
     }
 
 
@@ -2905,7 +3549,7 @@ function flipMemoryCard(card) {
     card.classList.add("flipped");
 
 
-    if (!firstCard) {
+    if(!firstCard){
 
         firstCard = card;
 
@@ -2919,10 +3563,10 @@ function flipMemoryCard(card) {
     memoryLocked = true;
 
 
-    if (
+    if(
         firstCard.dataset.emoji ===
         secondCard.dataset.emoji
-    ) {
+    ){
 
         firstCard.classList.add("matched");
 
@@ -2930,21 +3574,22 @@ function flipMemoryCard(card) {
 
         memoryMatches++;
 
+
         firstCard = null;
         secondCard = null;
 
         memoryLocked = false;
 
 
-        if (memoryMatches === 4) {
+        if(memoryMatches === 4){
 
             finishMemoryGame();
 
         }
 
-    } else {
+    }else{
 
-        setTimeout(() => {
+        setTimeout(()=>{
 
             firstCard.textContent = "?";
 
@@ -2955,25 +3600,26 @@ function flipMemoryCard(card) {
             secondCard.classList.remove("flipped");
 
             firstCard = null;
-
             secondCard = null;
 
             memoryLocked = false;
 
-        }, 700);
+        },700);
 
     }
 
 }
 
 
-function finishMemoryGame() {
+function finishMemoryGame(){
 
     const message =
         document.getElementById("memoryMessage");
 
+
     message.textContent =
         "🎉 You matched everything! +15 Tokens!";
+
 
     addTokens(
         15,
@@ -2983,29 +3629,19 @@ function finishMemoryGame() {
 }
 
 
-
 /* =========================================================
    QUIZ TOKEN REWARD
 ========================================================= */
 
-/*
-   Your existing quiz already has XP.
-
-   This gives the player Tokens after their
-   first completed quiz.
-
-   It prevents repeatedly restarting the quiz
-   just to farm unlimited Tokens.
-*/
-
-function rewardQuizTokens(score) {
+function rewardQuizTokens(score){
 
     const alreadyRewarded =
         localStorage.getItem(
             "smadcareQuizRewarded"
         );
 
-    if (alreadyRewarded) {
+
+    if(alreadyRewarded){
 
         return;
 
@@ -3013,8 +3649,14 @@ function rewardQuizTokens(score) {
 
 
     /*
-       6 questions × 5 Tokens maximum
-       + 10 completion Tokens
+       Completion reward:
+       10 Tokens
+
+       Plus:
+       5 Tokens per correct answer
+
+       Maximum:
+       40 Tokens
     */
 
     const reward =
