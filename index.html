@@ -2549,6 +2549,471 @@ document.addEventListener("keydown",function(e){
 
 //<!-- SMADCARE UPDATE -->
 
+/* =========================================================
+   SMADCARE TOKEN + BADGE SYSTEM
+========================================================= */
+
+const TOKEN_KEY = "smadcareTokens";
+
+let smadTokens = parseInt(
+    localStorage.getItem(TOKEN_KEY) || "0"
+);
+
+const badges = [
+    {
+        name: "🌱 Kindness Starter",
+        required: 0
+    },
+    {
+        name: "💙 Safe Supporter",
+        required: 50
+    },
+    {
+        name: "⭐ Kindness Champion",
+        required: 100
+    },
+    {
+        name: "🏆 SmadCare Hero",
+        required: 200
+    }
+];
+
+
+function saveTokens() {
+
+    localStorage.setItem(
+        TOKEN_KEY,
+        smadTokens
+    );
+
+}
+
+
+function getCurrentBadge() {
+
+    let current = badges[0];
+
+    badges.forEach(badge => {
+
+        if (smadTokens >= badge.required) {
+            current = badge;
+        }
+
+    });
+
+    return current;
+
+}
+
+
+function updateRewardsUI() {
+
+    const tokenElement =
+        document.getElementById("tokenCount");
+
+    const badgeElement =
+        document.getElementById("currentBadge");
+
+    if (tokenElement) {
+        tokenElement.textContent = smadTokens;
+    }
+
+    if (badgeElement) {
+
+        badgeElement.textContent =
+            getCurrentBadge().name;
+
+    }
+
+
+    // Update badge cards
+
+    badges.forEach((badge, index) => {
+
+        const element =
+            document.getElementById("badge" + index);
+
+        if (!element) return;
+
+        if (smadTokens >= badge.required) {
+
+            element.classList.add("unlocked");
+
+        } else {
+
+            element.classList.remove("unlocked");
+
+        }
+
+    });
+
+}
+
+
+function showTokenPopup(amount, message = "") {
+
+    const popup =
+        document.getElementById("tokenPopup");
+
+    if (!popup) return;
+
+    popup.textContent =
+        `🪙 +${amount} Tokens! ${message}`;
+
+    popup.classList.add("show");
+
+    setTimeout(() => {
+
+        popup.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+function addTokens(amount, reason = "") {
+
+    smadTokens += amount;
+
+    saveTokens();
+
+    updateRewardsUI();
+
+    showTokenPopup(amount, reason);
+
+}
+
+
+/* Initialize */
+
+updateRewardsUI();
+
+
+
+/* =========================================================
+   GAME 1 — TAP THE HEART
+========================================================= */
+
+let tapScore = 0;
+let tapTime = 10;
+let tapTimer = null;
+let tapGameRunning = false;
+
+
+function startTapGame() {
+
+    if (tapGameRunning) return;
+
+    tapScore = 0;
+    tapTime = 10;
+
+    tapGameRunning = true;
+
+    document.getElementById("tapScore")
+        .textContent = tapScore;
+
+    document.getElementById("tapTime")
+        .textContent = tapTime;
+
+    document.getElementById("tapMessage")
+        .textContent = "";
+
+    document.getElementById("startTapBtn")
+        .style.display = "none";
+
+    document.getElementById("tapHeart")
+        .style.display = "block";
+
+
+    tapTimer = setInterval(() => {
+
+        tapTime--;
+
+        document.getElementById("tapTime")
+            .textContent = tapTime;
+
+        if (tapTime <= 0) {
+
+            endTapGame();
+
+        }
+
+    }, 1000);
+
+}
+
+
+function tapHeart() {
+
+    if (!tapGameRunning) return;
+
+    tapScore++;
+
+    document.getElementById("tapScore")
+        .textContent = tapScore;
+
+}
+
+
+function endTapGame() {
+
+    clearInterval(tapTimer);
+
+    tapGameRunning = false;
+
+    document.getElementById("tapHeart")
+        .style.display = "none";
+
+    document.getElementById("startTapBtn")
+        .style.display = "inline-block";
+
+
+    /*
+       Every 5 taps = 1 Token.
+       Maximum 10 Tokens per round.
+    */
+
+    const reward =
+        Math.min(10, Math.floor(tapScore / 5));
+
+
+    if (reward > 0) {
+
+        addTokens(
+            reward,
+            "Great tapping!"
+        );
+
+        document.getElementById("tapMessage")
+            .textContent =
+            `Nice! You scored ${tapScore} taps and earned ${reward} Tokens!`;
+
+    } else {
+
+        document.getElementById("tapMessage")
+            .textContent =
+            `You scored ${tapScore} taps. Try again!`;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   GAME 2 — KINDNESS MEMORY
+========================================================= */
+
+const memoryEmojis = [
+    "💙",
+    "💙",
+    "⭐",
+    "⭐",
+    "🌱",
+    "🌱",
+    "🤝",
+    "🤝"
+];
+
+let memoryCards = [];
+let firstCard = null;
+let secondCard = null;
+let memoryLocked = false;
+let memoryMatches = 0;
+
+
+function startMemoryGame() {
+
+    const grid =
+        document.getElementById("memoryGrid");
+
+    const message =
+        document.getElementById("memoryMessage");
+
+    grid.innerHTML = "";
+
+    message.textContent = "";
+
+    firstCard = null;
+    secondCard = null;
+    memoryLocked = false;
+    memoryMatches = 0;
+
+
+    memoryCards =
+        [...memoryEmojis]
+        .sort(() => Math.random() - 0.5);
+
+
+    memoryCards.forEach((emoji, index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "memory-card";
+
+        button.textContent = "?";
+
+        button.dataset.emoji = emoji;
+
+        button.dataset.index = index;
+
+        button.onclick =
+            () => flipMemoryCard(button);
+
+        grid.appendChild(button);
+
+    });
+
+}
+
+
+function flipMemoryCard(card) {
+
+    if (memoryLocked) return;
+
+    if (card === firstCard) return;
+
+    if (card.classList.contains("matched")) {
+        return;
+    }
+
+
+    card.textContent =
+        card.dataset.emoji;
+
+    card.classList.add("flipped");
+
+
+    if (!firstCard) {
+
+        firstCard = card;
+
+        return;
+
+    }
+
+
+    secondCard = card;
+
+    memoryLocked = true;
+
+
+    if (
+        firstCard.dataset.emoji ===
+        secondCard.dataset.emoji
+    ) {
+
+        firstCard.classList.add("matched");
+
+        secondCard.classList.add("matched");
+
+        memoryMatches++;
+
+        firstCard = null;
+        secondCard = null;
+
+        memoryLocked = false;
+
+
+        if (memoryMatches === 4) {
+
+            finishMemoryGame();
+
+        }
+
+    } else {
+
+        setTimeout(() => {
+
+            firstCard.textContent = "?";
+
+            secondCard.textContent = "?";
+
+            firstCard.classList.remove("flipped");
+
+            secondCard.classList.remove("flipped");
+
+            firstCard = null;
+
+            secondCard = null;
+
+            memoryLocked = false;
+
+        }, 700);
+
+    }
+
+}
+
+
+function finishMemoryGame() {
+
+    const message =
+        document.getElementById("memoryMessage");
+
+    message.textContent =
+        "🎉 You matched everything! +15 Tokens!";
+
+    addTokens(
+        15,
+        "Memory Master!"
+    );
+
+}
+
+
+
+/* =========================================================
+   QUIZ TOKEN REWARD
+========================================================= */
+
+/*
+   Your existing quiz already has XP.
+
+   This gives the player Tokens after their
+   first completed quiz.
+
+   It prevents repeatedly restarting the quiz
+   just to farm unlimited Tokens.
+*/
+
+function rewardQuizTokens(score) {
+
+    const alreadyRewarded =
+        localStorage.getItem(
+            "smadcareQuizRewarded"
+        );
+
+    if (alreadyRewarded) {
+
+        return;
+
+    }
+
+
+    /*
+       6 questions × 5 Tokens maximum
+       + 10 completion Tokens
+    */
+
+    const reward =
+        10 + (score * 5);
+
+
+    addTokens(
+        reward,
+        "Quiz completed!"
+    );
+
+
+    localStorage.setItem(
+        "smadcareQuizRewarded",
+        "true"
+    );
+
+}
+
 </script>
 
 </body>
