@@ -1127,6 +1127,197 @@ footer p{
     .comic-character{font-size:4.5rem;}
     .comic-question{font-size:1.4rem;}
 }
+
+/* =========================
+   SMADCARE TOKENS + BADGES
+========================= */
+
+.rewards-box {
+    background: linear-gradient(135deg, #4f8cff, #8067ff);
+    color: white;
+    border-radius: 24px;
+    padding: 25px;
+    margin: 25px 0;
+    box-shadow: 0 10px 30px rgba(79,140,255,.18);
+}
+
+.rewards-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.token-display {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.badge-display {
+    background: rgba(255,255,255,.18);
+    padding: 12px 18px;
+    border-radius: 15px;
+    font-weight: 700;
+}
+
+.reward-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.reward-card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(30,50,100,.08);
+}
+
+.reward-card h3 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.reward-card p {
+    color: #667085;
+    line-height: 1.6;
+}
+
+.reward-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 13px 20px;
+    background: #4f8cff;
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.reward-btn:hover {
+    transform: translateY(-2px);
+    opacity: .9;
+}
+
+.reward-btn.secondary {
+    background: #8067ff;
+}
+
+.game-score {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 15px 0;
+}
+
+.tap-game {
+    text-align: center;
+    padding: 20px;
+    border-radius: 18px;
+    background: #f4f8ff;
+}
+
+.tap-heart {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 50%;
+    background: #ff73b8;
+    color: white;
+    font-size: 42px;
+    cursor: pointer;
+    display: none;
+    margin: 20px auto;
+    box-shadow: 0 8px 20px rgba(255,115,184,.3);
+    transition: transform .1s;
+}
+
+.tap-heart:active {
+    transform: scale(.9);
+}
+
+.game-message {
+    min-height: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.memory-card {
+    height: 65px;
+    border: none;
+    border-radius: 12px;
+    background: #4f8cff;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.memory-card.matched,
+.memory-card.flipped {
+    background: #54d99b;
+}
+
+.badges-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.badge-item {
+    padding: 15px;
+    border-radius: 15px;
+    background: #f4f8ff;
+    text-align: center;
+    font-weight: 700;
+    opacity: .45;
+}
+
+.badge-item.unlocked {
+    opacity: 1;
+    background: #fff4b8;
+}
+
+.token-popup {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    background: #17223b;
+    color: white;
+    padding: 15px 22px;
+    border-radius: 15px;
+    font-weight: 800;
+    z-index: 9999;
+    transform: translateY(120px);
+    transition: .3s;
+}
+
+.token-popup.show {
+    transform: translateY(0);
+}
+
+@media(max-width: 800px) {
+    .reward-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .badges-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .memory-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 </style>
 </head>
 
@@ -1194,6 +1385,7 @@ footer p{
 
         <div class="nav-links">
             <a href="#home">Home</a>
+            <a href="#rewards">🎮 Rewards</a>
             <a href="#safe">S.A.F.E</a>
             <a href="#about">About Bully</a>
             <a href="#framework">Framework</a>
@@ -1263,6 +1455,170 @@ footer p{
     </div>
 
 </section>
+
+<!-- =========================
+     SMADCARE REWARDS
+========================= -->
+
+<section id="rewards" class="section">
+    <div class="container">
+
+        <div class="section-title">
+            <span>SMADCARE REWARDS</span>
+            <h2>Learn. Play. Earn. 🌟</h2>
+            <p>Complete activities and games to collect Tokens and unlock badges!</p>
+        </div>
+
+        <div class="rewards-box">
+
+            <div class="rewards-top">
+
+                <div>
+                    <div style="font-size:15px;opacity:.85;">
+                        YOUR SMADCARE TOKENS
+                    </div>
+
+                    <div class="token-display">
+                        🪙 <span id="tokenCount">0</span>
+                    </div>
+                </div>
+
+                <div class="badge-display">
+                    🏅 <span id="currentBadge">Kindness Starter</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="reward-card">
+
+            <h3>🏅 Your Badges</h3>
+
+            <p>
+                Keep collecting Tokens to unlock new SmadCare badges!
+            </p>
+
+            <div class="badges-list">
+
+                <div class="badge-item unlocked" id="badge0">
+                    🌱<br>
+                    Kindness Starter<br>
+                    <small>0 Tokens</small>
+                </div>
+
+                <div class="badge-item" id="badge1">
+                    💙<br>
+                    Safe Supporter<br>
+                    <small>50 Tokens</small>
+                </div>
+
+                <div class="badge-item" id="badge2">
+                    ⭐<br>
+                    Kindness Champion<br>
+                    <small>100 Tokens</small>
+                </div>
+
+                <div class="badge-item" id="badge3">
+                    🏆<br>
+                    SmadCare Hero<br>
+                    <small>200 Tokens</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="reward-grid">
+
+            <!-- GAME 1 -->
+
+            <div class="reward-card">
+
+                <h3>💗 Tap the Heart</h3>
+
+                <p>
+                    Tap the heart as many times as you can before the timer ends!
+                </p>
+
+                <div class="tap-game">
+
+                    <div class="game-score">
+                        Score: <span id="tapScore">0</span>
+                    </div>
+
+                    <div>
+                        Time:
+                        <span id="tapTime">10</span>s
+                    </div>
+
+                    <button
+                        class="reward-btn"
+                        id="startTapBtn"
+                        onclick="startTapGame()">
+                        Start Game
+                    </button>
+
+                    <button
+                        class="tap-heart"
+                        id="tapHeart"
+                        onclick="tapHeart()">
+                        💗
+                    </button>
+
+                    <div
+                        class="game-message"
+                        id="tapMessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- GAME 2 -->
+
+            <div class="reward-card">
+
+                <h3>🧠 Kindness Memory</h3>
+
+                <p>
+                    Match all the kindness emojis!
+                </p>
+
+                <div id="memoryGame">
+
+                    <button
+                        class="reward-btn secondary"
+                        onclick="startMemoryGame()">
+                        Start Memory Game
+                    </button>
+
+                    <div
+                        class="memory-grid"
+                        id="memoryGrid">
+                    </div>
+
+                    <div
+                        class="game-message"
+                        id="memoryMessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<div
+    class="token-popup"
+    id="tokenPopup">
+</div>
 
 
 <!-- ================= S.A.F.E ================= -->
