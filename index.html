@@ -746,6 +746,91 @@ section{
 }
 
 /* =========================
+   APPOINTMENTS
+========================= */
+const APPOINTMENT_KEY = "smadcareAppointment";
+
+function setAppointmentMinDate(){
+    const input=document.getElementById("appointmentDate");
+    if(input){
+        const now=new Date();
+        const local=new Date(now.getTime()-now.getTimezoneOffset()*60000);
+        input.min=local.toISOString().split("T")[0];
+    }
+}
+
+function requestAppointment(){
+    const counsellor=document.getElementById("appointmentCounsellor").value;
+    const date=document.getElementById("appointmentDate").value;
+    const time=document.getElementById("appointmentTime").value;
+    const reason=document.getElementById("appointmentReason").value.trim();
+
+    if(!date){
+        alert("Sila pilih tarikh appointment.");
+        return;
+    }
+
+    const selected=new Date(date+"T23:59:59");
+    if(selected < new Date()){
+        alert("Sila pilih tarikh yang akan datang.");
+        return;
+    }
+
+    const appointment={counsellor,date,time,reason:reason||"Tiada topik dinyatakan",created:new Date().toLocaleString("ms-MY")};
+    localStorage.setItem(APPOINTMENT_KEY,JSON.stringify(appointment));
+    showAppointment(appointment);
+}
+
+function showAppointment(appointment){
+    document.getElementById("appointmentForm").style.display="none";
+    document.getElementById("appointmentStatus").style.display="block";
+    document.getElementById("appointmentDetails").innerHTML=
+        `<b>Counsellor:</b> ${escapeHTML(appointment.counsellor)}<br>`+
+        `<b>Date:</b> ${escapeHTML(appointment.date)}<br>`+
+        `<b>Time:</b> ${escapeHTML(appointment.time)}<br>`+
+        `<b>Topic:</b> ${escapeHTML(appointment.reason)}<br><br>`+
+        `<small>Request saved. Please confirm the actual meeting time with your school counsellor.</small>`;
+}
+
+function loadAppointment(){
+    const saved=localStorage.getItem(APPOINTMENT_KEY);
+    if(saved){
+        try{showAppointment(JSON.parse(saved));}catch(e){localStorage.removeItem(APPOINTMENT_KEY);}
+    }
+}
+
+function newAppointment(){
+    document.getElementById("appointmentForm").style.display="block";
+    document.getElementById("appointmentStatus").style.display="none";
+    document.getElementById("appointmentDate").value="";
+    document.getElementById("appointmentReason").value="";
+}
+
+function cancelAppointment(){
+    if(!confirm("Cancel this appointment request?")) return;
+    localStorage.removeItem(APPOINTMENT_KEY);
+    newAppointment();
+}
+
+function loadAppointments(){
+    const container=document.getElementById("appointmentsList");
+    if(!container) return;
+    const saved=localStorage.getItem(APPOINTMENT_KEY);
+    if(!saved){
+        container.innerHTML=`<div class="empty"><div style="font-size:4rem;">📅</div><h3>Belum ada appointment</h3><p>Appointment requests saved in this browser will appear here.</p></div>`;
+        return;
+    }
+    try{
+        const a=JSON.parse(saved);
+        container.innerHTML=`<div class="entry"><div class="student">📅 ${escapeHTML(a.counsellor)}</div><div class="date">${escapeHTML(a.date)} • ${escapeHTML(a.time)}</div><div class="message"><b>Topic:</b> ${escapeHTML(a.reason)}<br><small>Requested: ${escapeHTML(a.created)}</small></div></div>`;
+    }catch(e){container.innerHTML="";}
+}
+
+setAppointmentMinDate();
+loadAppointment();
+
+
+/* =========================
    INTERACTIVE COMIC
 ========================= */
 
@@ -999,6 +1084,20 @@ textarea{
     text-align:center;
     color:#667085;
 }
+
+/* =========================
+   APPOINTMENTS
+========================= */
+.appointment-section{background:linear-gradient(135deg,#f1f8ff,#f8f1ff);}
+.appointment-box{max-width:850px;margin:auto;background:white;border-radius:30px;padding:35px;box-shadow:0 15px 40px rgba(50,80,130,.09);}
+.appointment-note{background:#eef7ff;border-left:5px solid var(--blue);padding:15px 18px;border-radius:14px;color:#52657d;margin-bottom:25px;font-size:.88rem;line-height:1.6;}
+.appointment-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.appointment-status{display:none;margin-top:25px;padding:22px;border-radius:20px;background:#e8fff4;border:2px solid #54d99b;}
+.appointment-status h3{font-family:'Baloo 2';font-size:1.7rem;margin-bottom:8px;}
+.appointment-status p{line-height:1.7;color:#52657d;}
+.appointment-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}
+.appointment-btn-danger{background:#ff647c;color:white;border:0;border-radius:14px;padding:12px 18px;font-weight:700;cursor:pointer;}
+@media(max-width:650px){.appointment-grid{grid-template-columns:1fr;}.appointment-box{padding:22px;}}
 
 /* =========================
    FOOTER
@@ -1393,6 +1492,7 @@ footer p{
             <a href="#awareness">Awareness</a>
             <a href="#prs">PRS</a>
             <a href="#quiz">Quiz</a>
+            <a href="#appointments">📅 Appointment</a>
             <a href="#letitout">Let It Out</a>
         </div>
 
@@ -2088,6 +2188,68 @@ footer p{
 </div></div></section>
 
 
+<!-- ================= APPOINTMENTS ================= -->
+<section class="appointment-section" id="appointments">
+<div class="container">
+<div class="section-title">
+    <div class="mini">STUDENT SUPPORT</div>
+    <h2>📅 Book an Appointment</h2>
+    <p>Request a meeting with a school counsellor when you need someone to talk to.</p>
+</div>
+
+<div class="appointment-box">
+    <div class="appointment-note">
+        🔐 <b>Privacy:</b> Your appointment request is stored securely on this browser.
+    </div>
+
+    <div id="appointmentForm">
+        <div class="appointment-grid">
+            <div class="form-group">
+                <label>👩‍🏫 Counsellor</label>
+                <select id="appointmentCounsellor" style="width:100%;padding:15px;border:2px solid #e4e9f1;border-radius:15px;font-family:inherit;outline:none;">
+                    <option value="School Counsellor">Cikgu Azlan</option>
+                    <option value="Student Support Counsellor">Cikgu Nurul Hawariah</option>
+                    <option value="General Counselling Team">Cikgu Fazliza</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>📆 Date</label>
+                <input type="date" id="appointmentDate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>🕐 Preferred time</label>
+            <select id="appointmentTime" style="width:100%;padding:15px;border:2px solid #e4e9f1;border-radius:15px;font-family:inherit;outline:none;">
+                <option value="9:00 AM">9:00 AM</option>
+                <option value="10:00 AM">10:00 AM</option>
+                <option value="11:00 AM">11:00 AM</option>
+                <option value="2:00 PM">2:00 PM</option>
+                <option value="3:00 PM">3:00 PM</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>💬 Topic (optional)</label>
+            <textarea id="appointmentReason" placeholder="Contoh: Saya ingin bercakap tentang sesuatu yang berlaku di sekolah..." style="min-height:110px;"></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="requestAppointment()">📅 REQUEST APPOINTMENT</button>
+    </div>
+
+    <div class="appointment-status" id="appointmentStatus">
+        <h3>✅ Appointment Request Saved</h3>
+        <p id="appointmentDetails"></p>
+        <div class="appointment-actions">
+            <button class="btn btn-primary" onclick="newAppointment()">➕ New Request</button>
+            <button class="appointment-btn-danger" onclick="cancelAppointment()">✖ Cancel Request</button>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+
+
 <!-- ================= LET IT OUT ================= -->
 
 <section class="letitout" id="letitout">
@@ -2206,7 +2368,7 @@ footer p{
             <h2>📋 Student Let It Out</h2>
 
             <p style="color:#667085;">
-                Senarai luahan yang dihantar dalam sesi demo ini.
+                Senarai luahan yang dihantar melalui SmadCare.
             </p>
         </div>
 
@@ -2216,6 +2378,10 @@ footer p{
 
     </div>
 
+    <h3 style="font-family:'Baloo 2';font-size:2rem;margin:35px 0 15px;">📅 Appointment Requests</h3>
+    <div id="appointmentsList"></div>
+
+    <h3 style="font-family:'Baloo 2';font-size:2rem;margin:35px 0 15px;">💬 Student Let It Out</h3>
     <div id="entries"></div>
 
 </div>
@@ -2342,6 +2508,7 @@ function teacherLogin(){
         document.getElementById("teacherDashboard").style.display = "block";
 
         loadEntries();
+        loadAppointments();
 
     }else{
 
